@@ -39,15 +39,9 @@ export default function MarketPage() {
   if (!coin) return;
 
   try {
-    const res = await fetch("https://api.hyperliquid.xyz/info", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        type: "metaAndAssetCtxs",
-      }),
-    });
+    const res = await fetch("/api/hl", {
+  method: "POST",
+});
 
     const json = await res.json();
 

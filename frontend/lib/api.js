@@ -49,14 +49,9 @@ export const unfollowTrader = (address, wallet) => post("/social/unfollow", { ad
 
 // ── Trade meta ───────────────────────────────────────────────────
 export const getTradeMeta = async () => {
-  const res = await fetch("https://api.hyperliquid.xyz/info", {
+  const res = await fetch("/api/hl", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      type: "metaAndAssetCtxs",
-    }),
+    cache: "no-store",
   });
 
   const json = await res.json();
@@ -68,23 +63,11 @@ export const getTradeMeta = async () => {
   const mids = {};
 
   universe.forEach((asset, i) => {
-    assetMap[asset.name] = {
-      index: i,
-      name: asset.name,
-    };
-
-    const px = parseFloat(ctxs[i]?.markPx || 0);
-    mids[asset.name] = px;
+    assetMap[asset.name] = { index: i, name: asset.name };
+    mids[asset.name] = parseFloat(ctxs[i]?.markPx || 0);
   });
 
-  console.log("FINAL DATA:", { assetMap, mids });
-
-  return {
-    data: {
-      assetMap,
-      mids,
-    },
-  };
+  return { data: { assetMap, mids } };
 };
 export const getFeeInfo = () => get("/trade/fees");
 
