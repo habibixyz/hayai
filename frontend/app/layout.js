@@ -4,7 +4,8 @@ import TickerTape from "../components/ui/TickerTape";
 
 export const metadata = {
   title: "Hayai — Hyperliquid Markets Terminal",
-  description: "Live Hyperliquid perps data. Prices, funding rates, whale trades, liquidations.",
+  description:
+    "Live Hyperliquid perps data. Prices, funding rates, whale trades, liquidations.",
 };
 
 export default function RootLayout({ children }) {
