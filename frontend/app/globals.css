@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg:        #0a0e13;
+  --surface:   #111720;
+  --surface-2: #161d28;
+  --border:    #1e2a38;
+  --muted:     #243040;
+  --accent:    #00e8c6;
+  --accent-2:  #00b8a0;
+  --green:     #0cd98a;
+  --red:       #f0444b;
+  --blue:      #3b8ef0;
+  --gold:      #f0b429;
+  --text-primary:   #e8f0f8;
+  --text-secondary: #5a7a9a;
+  --text-muted:     #2a4060;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+::selection { background: rgba(0,232,198,0.2); }
+
+@layer utilities {
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .card-2 {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .card-hover {
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .card-hover:hover {
+    border-color: var(--muted);
+    background: var(--surface-2);
+  }
+
+  .badge-long  { background: rgba(12,217,138,0.12); color: var(--green); border: 1px solid rgba(12,217,138,0.25); }
+  .badge-short { background: rgba(240,68,75,0.12);  color: var(--red);   border: 1px solid rgba(240,68,75,0.25); }
+  .badge-whale { background: rgba(240,180,41,0.12); color: var(--gold);  border: 1px solid rgba(240,180,41,0.25); }
+
+  .shimmer {
+    background: linear-gradient(90deg, var(--surface) 25%, var(--muted) 50%, var(--surface) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+  }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+  .input-field {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+  }
+  .input-field:focus { border-color: var(--accent); }
+  .input-field::placeholder { color: var(--text-muted); }
+
+  /* Ticker */
+  .ticker-inner { display: flex; width: max-content; animation: ticker 35s linear infinite; }
+  .ticker-inner:hover { animation-play-state: paused; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+}
