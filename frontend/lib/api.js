@@ -1,3 +1,4 @@
+// TEST CHANGE 123
 const BASE = typeof window !== "undefined"
   ? "/api"
   : `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/api`;
@@ -49,7 +50,7 @@ export const unfollowTrader = (address, wallet) => post("/social/unfollow", { ad
 
 // ── Trade meta ───────────────────────────────────────────────────
 export const getTradeMeta = async () => {
-  const res = await fetch("/api/hl", {
+  const res = await fetch("/api/hl", { // force update
     method: "POST",
     cache: "no-store",
   });
@@ -58,9 +59,6 @@ export const getTradeMeta = async () => {
 
   const universe = json[0]?.universe || [];
   const ctxs = json[1] || [];
-
-  const assetMap = {};
-  const mids = {};
 
   universe.forEach((asset, i) => {
     assetMap[asset.name] = { index: i, name: asset.name };
