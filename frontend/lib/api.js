@@ -48,7 +48,44 @@ export const followTrader = (address, wallet) => post("/social/follow", { addres
 export const unfollowTrader = (address, wallet) => post("/social/unfollow", { address }, wallet);
 
 // ── Trade meta ───────────────────────────────────────────────────
-export const getTradeMeta = () => get("/trade/meta");
+export const getTradeMeta = async () => {
+  const res = await fetch("https://api.hyperliquid.xyz/info", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      type: "metaAndAssetCtxs",
+    }),
+  });
+
+  const json = await res.json();
+
+  const universe = json[0]?.universe || [];
+  const ctxs = json[1] || [];
+
+  const assetMap = {};
+  const mids = {};
+
+  universe.forEach((asset, i) => {
+    assetMap[asset.name] = {
+      index: i,
+      name: asset.name,
+    };
+
+    const px = parseFloat(ctxs[i]?.markPx || 0);
+    mids[asset.name] = px;
+  });
+
+  console.log("FINAL DATA:", { assetMap, mids });
+
+  return {
+    data: {
+      assetMap,
+      mids,
+    },
+  };
+};
 export const getFeeInfo = () => get("/trade/fees");
 
 // ── Formatters ───────────────────────────────────────────────────

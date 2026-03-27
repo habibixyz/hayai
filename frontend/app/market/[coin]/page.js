@@ -36,14 +36,56 @@ export default function MarketPage() {
   const [tab, setTab]       = useState("trades");
 
   const fetchData = useCallback(async () => {
-    if (!coin) return;
-    try {
-      const res  = await fetch(`/api/markets/asset/${coin.toUpperCase()}`);
-      const json = await res.json();
-      if (json.success) setData(json.data);
-    } catch (e) { console.error(e); }
-    finally { setLoading(false); }
-  }, [coin]);
+  if (!coin) return;
+
+  try {
+    const res = await fetch("https://api.hyperliquid.xyz/info", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "metaAndAssetCtxs",
+      }),
+    });
+
+    const json = await res.json();
+
+    const universe = json[0]?.universe || [];
+    const ctxs = json[1] || [];
+
+    const index = universe.findIndex(
+      (a) => a.name === coin.toUpperCase()
+    );
+
+    if (index === -1) {
+      setData(null);
+      return;
+    }
+
+    const ctx = ctxs[index];
+
+    setData({
+      mid: parseFloat(ctx.markPx),
+      change24h: parseFloat(ctx.priceChange24h || 0),
+      high24h: parseFloat(ctx.high24h || 0),
+      low24h: parseFloat(ctx.low24h || 0),
+      volume24h: parseFloat(ctx.volume24h || 0),
+      openInterest: parseFloat(ctx.openInterest || 0),
+      funding: parseFloat(ctx.funding || 0),
+      maxLeverage: 50,
+
+      // dummy placeholders (so UI doesn't crash)
+      orderBook: { bids: [], asks: [] },
+      recentTrades: [],
+    });
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    setLoading(false);
+  }
+}, [coin]);
 
   useEffect(() => {
     fetchData();
