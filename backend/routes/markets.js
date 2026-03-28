@@ -52,7 +52,6 @@ router.get("/overview", async (req, res) => {
     shortCache.set(key, result);
     res.json(result);
   } catch (e) {
-    console.error("[markets/overview]", e.message);
     res.status(500).json({ success: false, error: e.message });
   }
 });

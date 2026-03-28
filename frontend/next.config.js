@@ -1,10 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
-    return [{
-      source: "/api/:path*",
-      destination: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/api/:path*`,
-    }];
-  },
+  // No backend rewrites needed — API routes are now built into Next.js
 };
 module.exports = nextConfig;
